@@ -1,22 +1,6 @@
 package password
 
-import (
-	"fmt"
-	"os"
-	"testing"
-)
-
-var common CommonList
-
-func init() {
-	filename := "password_list_test.txt"
-	var err error
-	common, err = NewCommonList(filename)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-}
+import "testing"
 
 func TestPasswordCheckValidity(t *testing.T) {
 	var testStrings = []struct {
@@ -36,6 +20,11 @@ func TestPasswordCheckValidity(t *testing.T) {
 		{Password("ಠ_ಠasdsadಠ_ಠ"), ErrInvalidCharacters},
 		{Password("zzzzfitt"), ErrCommon},
 		{Password("vjht008"), ErrTooShort},
+	}
+	filename := "password_list_test.txt"
+	common, err := NewCommonList(filename)
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	for _, test := range testStrings {
