@@ -63,7 +63,7 @@ func (p *Password) OverMaxCharacters() bool {
 	return len(*p) >= maxCharacters
 }
 
-// UnderMinCharacters determines if the password has less than the configured minumum number of chatacters
+// UnderMinCharacters determines if the password has less than the configured minimum number of chatacters
 func (p *Password) UnderMinCharacters() bool {
 	return len(*p) < minCharacters
 }
