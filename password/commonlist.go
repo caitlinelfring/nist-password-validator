@@ -32,10 +32,6 @@ func NewCommonList(filename string) (CommonList, error) {
 
 // Matches determines if the supplied string it a match to the list of common passwords
 func (c *CommonList) Matches(input string) bool {
-	// Can't search without the list being sorted, so just to be sure...
-	if !sort.StringsAreSorted(c.list) {
-		sort.Strings(c.list)
-	}
 	idx := sort.SearchStrings(c.list, input)
 	return idx < len(c.list) && c.list[idx] == input
 }
