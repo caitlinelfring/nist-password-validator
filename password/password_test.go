@@ -9,7 +9,7 @@ import (
 var common CommonList
 
 func init() {
-	filename := "../10-million-password-list-top-1000000.txt"
+	filename := "password_list_test.txt"
 	var err error
 	common, err = NewCommonList(filename)
 	if err != nil {
