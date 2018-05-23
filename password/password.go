@@ -68,11 +68,6 @@ func (p *Password) UnderMinCharacters() bool {
 	return len(*p) < minCharacters
 }
 
-// isEqual determines if the supplied string matches the Password
-func (p *Password) isEqual(compare string) bool {
-	return compare == string(*p)
-}
-
 // IsCommon determines if the password is in the list of loaded common passwords
 func (p *Password) IsCommon(common CommonList) bool {
 	// TODO: This search should be more efficient
