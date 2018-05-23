@@ -1,5 +1,5 @@
 # NIST Password Validator
-[![Go Report Card](https://goreportcard.com/badge/github.com/caitlin615/nist-password-validator)](https://goreportcard.com/report/github.com/caitlin615/nist-password-validator)
+[![Go Report Card](https://goreportcard.com/badge/github.com/caitlin615/nist-password-validator)](https://goreportcard.com/report/github.com/caitlin615/nist-password-validator) [![GoCover.io](https://gocover.io/_badge/github.com/caitlin615/nist-password-validator/password)](https://gocover.io/github.com/caitlin615/nist-password-validator/password)
 
 [NIST](https://www.nist.gov/) recently updates their [Digital Identity Guidelines](https://pages.nist.gov/800-63-3/) in June 2017.
 The new guidelines specify general rules for handling the security of user supplied passwords.
