@@ -10,6 +10,7 @@ package password
 
 import (
 	"errors"
+	"io"
 	"unicode"
 )
 
@@ -29,49 +30,74 @@ const (
 	minCharacters = 8
 )
 
-// Password is a type alias for a string of password that needs to be validated
-type Password string
+// Validator is a password validator with configurable settings
+type Validator struct {
+	AcceptASCIIOnly    bool
+	MaxCharacters      int
+	MinCharacters      int
+	commonPasswordList *CommonList
+}
 
-// CheckValidity checks the Password based on the NIST password criteria
-func (p *Password) CheckValidity(common CommonList) error {
-	if !p.IsASCII() {
+// NewValidator returns a password validator based on the configuration values supplied
+func NewValidator(acceptASCIIOnly bool, minChar, maxChar int) *Validator {
+	// TODO: Make sure minChar, maxChar are greater than 0 and make sure maxChar is greater than minChar
+	v := Validator{
+		AcceptASCIIOnly: acceptASCIIOnly,
+		MaxCharacters:   maxChar,
+		MinCharacters:   minChar,
+	}
+	return &v
+}
+
+// AddCommonPasswords constructs a CommonList from the supplied reader
+func (v *Validator) AddCommonPasswords(r io.Reader) error {
+	list, err := NewCommonList(r)
+	v.commonPasswordList = &list
+	return err
+}
+
+// ValidatePassword checks the Password based on the NIST password criteria
+func (v *Validator) ValidatePassword(pass string) error {
+	p := Password(pass)
+	if v.AcceptASCIIOnly && !p.isASCII() {
 		return ErrInvalidCharacters
 	}
-	if p.UnderMinCharacters() {
-		return ErrTooShort
-	}
-	if p.OverMaxCharacters() {
+	if v.overMaxCharacters(p) {
 		return ErrTooLong
 	}
-	if p.IsCommon(common) {
+	if v.underMinCharacters(p) {
+		return ErrTooShort
+	}
+	if v.isCommon(p) {
 		return ErrCommon
 	}
 	return nil
 }
 
+// overMaxCharacters determines if the password has more than the configured maximum number of chatacters
+func (v *Validator) overMaxCharacters(p Password) bool {
+	return len(p) > v.MaxCharacters
+}
+
+// underMinCharacters determines if the password has less than the configured minimum number of chatacters
+func (v *Validator) underMinCharacters(p Password) bool {
+	return len(p) < v.MinCharacters
+}
+
+// isCommon determines if the password is in the list of loaded common passwords
+func (v *Validator) isCommon(p Password) bool {
+	return v.commonPasswordList.Matches(string(p))
+}
+
+// Password is a type alias for a string of password that needs to be validated
+type Password string
+
 // IsASCII checks each rune in the string to determine if the string contains any non-ASCII characters
-func (p *Password) IsASCII() bool {
+func (p *Password) isASCII() bool {
 	for _, r := range *p {
 		if r > unicode.MaxASCII {
 			return false
 		}
 	}
 	return true
-}
-
-// OverMaxCharacters determines if the password has more than the configured maximum number of chatacters
-func (p *Password) OverMaxCharacters() bool {
-	return len(*p) > maxCharacters
-}
-
-// UnderMinCharacters determines if the password has less than the configured minimum number of chatacters
-func (p *Password) UnderMinCharacters() bool {
-	return len(*p) < minCharacters
-}
-
-// IsCommon determines if the password is in the list of loaded common passwords
-func (p *Password) IsCommon(common CommonList) bool {
-	// TODO: This search should be more efficient
-	found := common.Matches(string(*p))
-	return found
 }
