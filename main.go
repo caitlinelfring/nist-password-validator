@@ -34,20 +34,6 @@ import (
 func main() {
 	// Read the passwords from stdin
 	stdin := bufio.NewScanner(os.Stdin)
-
-	inputPasswords := []password.Password{}
-	// TODO: What happens if nothing is provided to stdin?
-	for stdin.Scan() {
-		text := stdin.Text()
-		if len(text) != 0 {
-			inputPasswords = append(inputPasswords, password.Password(text))
-		}
-	}
-	if err := stdin.Err(); err != nil {
-		fmt.Printf("Error loading passwords from stdin: %s", err)
-		os.Exit(1)
-	}
-
 	if len(os.Args) <= 1 {
 		fmt.Println("Common password file must be supplied as the first argument")
 		os.Exit(1)
@@ -59,8 +45,15 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	// Check each password
-	for _, pass := range inputPasswords {
+
+	// TODO: What happens if nothing is provided to stdin?
+	for stdin.Scan() {
+		text := stdin.Text()
+		if len(text) == 0 {
+			continue
+		}
+
+		pass := password.Password(text)
 		if err := pass.CheckValidity(commonPasswords); err != nil {
 			if err == password.ErrInvalidCharacters {
 				fmt.Printf("*** -> Error: %s\n", err)
@@ -68,5 +61,10 @@ func main() {
 				fmt.Printf("%s -> Error: %s\n", pass, err)
 			}
 		}
+	}
+
+	if err := stdin.Err(); err != nil {
+		fmt.Printf("Error loading passwords from stdin: %s", err)
+		os.Exit(1)
 	}
 }
