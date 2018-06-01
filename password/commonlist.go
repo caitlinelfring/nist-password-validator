@@ -25,7 +25,7 @@ func NewCommonList(filename string) (CommonList, error) {
 	c.list = strings.Split(string(data), "\n")
 
 	// Sort strings. This uses quicksort
-	// TODO: maybe try another soring algorithm for larger datasets
+	// TODO: maybe try another sorting algorithm for larger datasets
 	sort.Strings(c.list)
 	return c, nil
 }
