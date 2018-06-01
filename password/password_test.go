@@ -32,6 +32,11 @@ func TestPasswordCheckValidity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	// TODO: Add more Validator tests
+	// acceptASCIIOnly = false
+	// min > max
+	// max = min = 0 (defaults?)
 	validator := NewValidator(true, 8, 64)
 
 	// Creating a new Validator and adding the common password list are two different steps,
