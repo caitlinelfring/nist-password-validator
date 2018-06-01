@@ -61,7 +61,7 @@ func (p *Password) IsASCII() bool {
 
 // OverMaxCharacters determines if the password has more than the configured maximum number of chatacters
 func (p *Password) OverMaxCharacters() bool {
-	return len(*p) >= maxCharacters
+	return len(*p) > maxCharacters
 }
 
 // UnderMinCharacters determines if the password has less than the configured minimum number of chatacters

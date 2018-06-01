@@ -9,6 +9,8 @@ func TestPasswordCheckValidity(t *testing.T) {
 	}{
 		{Password(""), ErrTooShort},
 		{Password("abcd"), ErrTooShort},
+		{Password("qwertyui"), nil},
+		{Password("qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopas"), nil},
 		{Password("asdlfdja;sfjajfpojp8jp8efpw3jpowefjohefpowahepfo"), nil},
 		{Password("asdlfdja;sfjajfpojp8jp8efpw3jpowsa efjohefpowahepfo"), nil},
 		{Password("asdlfdja;sfjajfpojp8jp8efpw3jpowsa efjohefpowahepfo"), nil},
@@ -20,6 +22,7 @@ func TestPasswordCheckValidity(t *testing.T) {
 		{Password("ಠ_ಠasdsadಠ_ಠ"), ErrInvalidCharacters},
 		{Password("zzzzfitt"), ErrCommon},
 		{Password("vjht008"), ErrTooShort},
+		{Password("123456789"), ErrCommon},
 	}
 	filename := "password_list_test.txt"
 	common, err := NewCommonList(filename)
