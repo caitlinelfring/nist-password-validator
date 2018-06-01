@@ -1,6 +1,9 @@
 package password
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
 func TestPasswordCheckValidity(t *testing.T) {
 	var testStrings = []struct {
@@ -25,7 +28,11 @@ func TestPasswordCheckValidity(t *testing.T) {
 		{Password("123456789"), ErrCommon},
 	}
 	filename := "password_list_test.txt"
-	common, err := NewCommonList(filename)
+	file, err := os.Open(filename)
+	if err != nil {
+		t.Fatal(err)
+	}
+	common, err := NewCommonList(file)
 	if err != nil {
 		t.Fatal(err)
 	}

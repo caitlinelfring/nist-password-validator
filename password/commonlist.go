@@ -1,37 +1,36 @@
 package password
 
 import (
-	"io/ioutil"
-	"sort"
-	"strings"
+	"bufio"
+	"io"
 )
 
 // CommonList holds a list of strings containing common passwords
 type CommonList struct {
-	list []string
+	mapping map[string]bool
 }
 
 // NewCommonList list returns a CommonList with a list of sorted strings from the contents
 // of the supplied filename
-func NewCommonList(filename string) (CommonList, error) {
-	c := CommonList{}
+func NewCommonList(r io.Reader) (CommonList, error) {
+	c := CommonList{mapping: map[string]bool{}}
 
-	data, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return c, err
+	reader := bufio.NewScanner(r)
+
+	for reader.Scan() {
+		if text := reader.Text(); len(text) > 0 {
+			c.mapping[text] = true
+		}
 	}
 
-	// Split on newline
-	c.list = strings.Split(string(data), "\n")
-
-	// Sort strings. This uses quicksort
-	// TODO: maybe try another sorting algorithm for larger datasets
-	sort.Strings(c.list)
+	if err := reader.Err(); err != nil && err != io.EOF {
+		return c, err
+	}
 	return c, nil
 }
 
 // Matches determines if the supplied string it a match to the list of common passwords
 func (c *CommonList) Matches(input string) bool {
-	idx := sort.SearchStrings(c.list, input)
-	return idx < len(c.list) && c.list[idx] == input
+	_, ok := c.mapping[input]
+	return ok
 }
