@@ -56,6 +56,9 @@ func BenchmarkCommonListMatches(b *testing.B) {
 	// Using a fixed seed will produce the same output on every run.
 	r := rand.New(rand.NewSource(99))
 	totalCommonPasswords := len(commonList.mapping)
+
+	// So the benchmark test can pick random items from the common password list,
+	// we're putting them in slice of strings
 	listing := make([]string, 0, totalCommonPasswords)
 	for p := range commonList.mapping {
 		listing = append(listing, p)
