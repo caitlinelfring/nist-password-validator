@@ -68,8 +68,10 @@ func (v *Validator) ValidatePassword(pass string) error {
 	if v.underMinCharacters(p) {
 		return ErrTooShort
 	}
-	if v.isCommon(p) {
-		return ErrCommon
+	if v.commonPasswordList != nil {
+		if v.isCommon(p) {
+			return ErrCommon
+		}
 	}
 	return nil
 }

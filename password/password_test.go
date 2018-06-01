@@ -33,6 +33,24 @@ func TestPasswordCheckValidity(t *testing.T) {
 		t.Fatal(err)
 	}
 	validator := NewValidator(true, 8, 64)
+
+	// Creating a new Validator and adding the common password list are two different steps,
+	// so there's the potential that there will be no common passwords to check against.
+	// Therefore, we should test for this scenario.
+	for _, test := range testStrings {
+		got := validator.ValidatePassword(test.value)
+		// Since the common list hasn't been configured, if it's a common password,
+		// the validator it shouldn't return an error
+		if test.expected == ErrCommon {
+			if err != nil {
+				t.Errorf("%s -- expected: no error, got: %v", test.value, got)
+			}
+		} else if got != test.expected {
+			t.Errorf("%s -- expected: %v, got: %v", test.value, test.expected, got)
+		}
+	}
+
+	// Now lets add the common password list and run the same tests
 	err = validator.AddCommonPasswords(file)
 	if err != nil {
 		t.Fatal(err)
