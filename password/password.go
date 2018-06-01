@@ -1,4 +1,4 @@
-// Package password provides utility's to validate a password or list of passwords against a set of criteria
+// Package password provides utilities to validate a password or list of passwords against a set of criteria
 package password
 
 // Passwords MUST
