@@ -1,0 +1,17 @@
+language: go
+
+go:
+  - "1.10"
+
+before_install:
+  - go get github.com/mattn/goveralls
+  - go get golang.org/x/tools/cmd/cover
+
+script:
+  - make test-coverage
+  - make benchmark
+  - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci
+
+notifications:
+  email:
+    - celfring@gmail.com
