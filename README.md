@@ -1,6 +1,8 @@
 # NIST Password Validator
+
+[![Build Status](https://travis-ci.org/caitlin615/nist-password-validator.svg?branch=master)](https://travis-ci.org/caitlin615/nist-password-validator)
 [![Go Report Card](https://goreportcard.com/badge/github.com/caitlin615/nist-password-validator)](https://goreportcard.com/report/github.com/caitlin615/nist-password-validator)
-[![GoCover.io](https://gocover.io/_badge/github.com/caitlin615/nist-password-validator/password)](https://gocover.io/github.com/caitlin615/nist-password-validator/password)
+[![Coverage Status](https://coveralls.io/repos/github/caitlin615/nist-password-validator/badge.svg?branch=master)](https://coveralls.io/github/caitlin615/nist-password-validator?branch=master)
 [![GoDoc](https://godoc.org/github.com/caitlin615/nist-password-validator?status.svg)](https://godoc.org/github.com/caitlin615/nist-password-validator)
 
 [NIST](https://www.nist.gov/) recently updates their [Digital Identity Guidelines](https://pages.nist.gov/800-63-3/) in June 2017.
